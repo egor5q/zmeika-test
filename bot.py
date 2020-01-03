@@ -72,7 +72,7 @@ def joinn(m):
     allem = []
     em = random.choice(ems)
     for ids in game['players']:
-        allem.append(game['players']['emoji'])
+        allem.append(game['players'][ids]['emoji'])
     while em in allem:
         em = random.choice(ems)
     
