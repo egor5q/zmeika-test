@@ -133,6 +133,7 @@ def joinn(m):
     
 @bot.message_handler(commands=['go'])
 def go(m):
+  try:
     if m.chat.id not in games:
         bot.send_message(m.chat.id, 'Игра ещё не была создана!')
         return
@@ -184,7 +185,8 @@ def go(m):
                 
 
         threading.Timer(6, next_turn, args=[game]).start()
-        
+  except:
+    bot.send_message(441399484, traceback.format_exc())
         
 @bot.callback_query_handler(func=lambda call: True)
 def calls(call):
