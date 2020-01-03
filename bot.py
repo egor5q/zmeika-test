@@ -226,20 +226,25 @@ def next_turn(game):
                     playerdie.append(p1)
     for ids in fragmentdie:
         del game['players'][ids['player']['id']]['coords'][str(ids['fragment']['pos'][0])+'-'+str(ids['fragment']['pos'][1])]
+        del game['ground'][str(ids['fragment']['pos'][0])+'-'+str(ids['fragment']['pos'][1])]
         
     for ids in playerdie:
         game['players'][ids['id']]['alive'] = False
         
     for ids in game['players']:
         for idss in game['players'][ids]['coords']:
-            coord = game['players'][ids]['coords'][idss]
-            game['ground'][idss]['item'] = coord
+            try:
+                coord = game['players'][ids]['coords'][idss]
+                game['ground'][idss]['item'] = coord
+            except:
+                playerdie.append(game['players'][ids])
+    for ids in playerdie:
+        game['players'][ids['id']]['alive'] = False
             
     for ids in game['msgs']:
         msg = ids
-        
         ground(game, id=msg.chat.id, kb=True, send=False, msgid = msg.message_id)
-    threading.Timer(1, next_turn, args = [game]).start()
+    threading.Timer(2, next_turn, args = [game]).start()
       
   except:
     bot.send_message(441399484, traceback.format_exc())
