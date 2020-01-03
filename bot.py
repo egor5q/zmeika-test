@@ -175,7 +175,7 @@ def go(m):
         foods = ['🌭', '🍏', '🍄', '🍩']        
         while game['food'] <= game['foodamount']:
             place = random.choice(lst)
-            game['ground'][str(place['code'][0])+'-'+str(place['code'][0])]['item'] = {
+            game['ground'][str(place['code'][0])+'-'+str(place['code'][1])]['item'] = {
                 'pos':[place['code'][0], place['code'][1]],
                 'type':'food',
                 'emoji':random.choice(foods)
