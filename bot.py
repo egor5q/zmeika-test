@@ -77,7 +77,7 @@ def joinn(m):
     if game['started'] == True:
         bot.send_message(m.chat.id, 'Игра уже идёт!')
         return
-    ems = ['👁', '🐼', '🐷', '🌝', '🌚']
+    ems = ['👁', '🐼', '🐷', '🌝', '🌚', '💣']
     
     allem = []
     em = random.choice(ems)
@@ -157,13 +157,31 @@ def go(m):
         kb.add(types.InlineKeyboardButton(text = 'ᅠ', callback_data = 'none'),
            types.InlineKeyboardButton(text = 'v', callback_data = 'down '+str(game['id'])),
            types.InlineKeyboardButton(text = 'ᅠ', callback_data = 'none')
-                                                                )
+        )
+        
+        lst = []
+        for ids in game['ground']:
+            if game['ground'][ids]['item'] == None:
+                lst.append(game['ground'][ids])
+        foods = ['🌭', '🍏', '🍄', '🍩']        
+        while len(game['food']) < game['foodamount']:
+            place = random.choice(lst)
+            game['ground'][str(place['code'][0])+'-'+str(place['code'][0])]['item'] = {
+                'pos':[place['code'][0], place['code'][1]],
+                'type':'food',
+                'emoji':random.choice(foods)
+            }
+                
+                
+                
+        
         for ids in game['players']:
             try:
                 msg = bot.send_message(game['players'][ids]['id'], ground(game, id=game['players'][ids]['id'], kb=True, send=True), reply_markup = kb)
                 game['msgs'].append(msg)
             except:
                 bot.send_message(441399484, traceback.format_exc())
+                
 
         threading.Timer(6, next_turn, args=[game]).start()
         
@@ -231,6 +249,21 @@ def next_turn(game):
                 else:
                     print('sneak die!')
                     playerdie.append(p1)
+    
+    fdremove = []
+    for ids in game['players']:
+        player = game['players'][ids]
+        item = game['ground'][str(player['main'][0])+'-'+str(player['main'][1])]['item']
+        if item != None:
+            if item['type'] == 'food':
+                for ids in player['coords']:
+                    fragment = player['coords'][ids]
+                    fragment['lifetime'] += 1
+                    for ids in fragmentdie:
+                        if ids['player']['id'] == player['id']:
+                            fdremove.append(ids)
+    for ids in fdremove:
+        fragmentdie.remove(ids)
                     
     for ids in game['players']:
         player = game['players'][ids]
@@ -356,7 +389,9 @@ def creategame(m, machine = 'phone', maxp = 4):
         'ground':g,
         'machine':machine,
         'code':code,
-        'maxp':maxp
+        'maxp':maxp,
+        'food':{},
+        'foodamount':5
         
     }
            }
