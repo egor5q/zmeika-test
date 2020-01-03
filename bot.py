@@ -165,13 +165,14 @@ def go(m):
             if game['ground'][ids]['item'] == None:
                 lst.append(game['ground'][ids])
         foods = ['🌭', '🍏', '🍄', '🍩']        
-        while len(game['food']) < game['foodamount']:
+        while game['food'] < game['foodamount']:
             place = random.choice(lst)
             game['ground'][str(place['code'][0])+'-'+str(place['code'][0])]['item'] = {
                 'pos':[place['code'][0], place['code'][1]],
                 'type':'food',
                 'emoji':random.choice(foods)
             }
+            game['food'] += 1
                 
                 
                 
@@ -392,7 +393,7 @@ def creategame(m, machine = 'phone', maxp = 4):
         'machine':machine,
         'code':code,
         'maxp':maxp,
-        'food':{},
+        'food':0,
         'foodamount':5
         
     }
