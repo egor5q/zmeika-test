@@ -226,7 +226,7 @@ def next_turn(game):
                     playerdie.append(p1)
     for ids in fragmentdie:
         del game['players'][ids['player']['id']]['coords'][str(ids['fragment']['pos'][0])+'-'+str(ids['fragment']['pos'][1])]
-        del game['ground'][str(ids['fragment']['pos'][0])+'-'+str(ids['fragment']['pos'][1])]
+        game['ground'][str(ids['fragment']['pos'][0])+'-'+str(ids['fragment']['pos'][1])]['item'] = None
         
     for ids in playerdie:
         game['players'][ids['id']]['alive'] = False
