@@ -255,7 +255,7 @@ def ground(game, id, kb=False, send=True, msgid = None):
         if obj['item'] == None:
             text += '⬜'
         elif obj['item']['type'] == 'zmei':
-            player = game['players'][obj['id']]
+            player = game['players'][obj['item']['id']]
             text += player['emoji']
         elif obj['item']['type'] == 'food':
             text += obj['emoji']
