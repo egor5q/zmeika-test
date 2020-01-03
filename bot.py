@@ -31,6 +31,16 @@ def start(m):
     bot.send_message(m.chat.id, 'Приветствие')
 
     
+@bot.message_handler(commands=['del'])
+def deleeet(m):
+    try:
+        game = games[m.chat.id]
+    except:
+        return
+    if game['creator'] == m.from_user.id:
+        del games[game['id']]
+        bot.send_message(m.chat.id, 'Игра удалена.')
+    
 @bot.message_handler(commands=['prepare'])
 def startgame(m):
 
