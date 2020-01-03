@@ -420,7 +420,7 @@ def creategame(m, machine = 'phone', maxp = 4):
         'code':code,
         'maxp':maxp,
         'food':0,
-        'foodamount':5
+        'foodamount':8
         
     }
            }
