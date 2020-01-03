@@ -257,9 +257,13 @@ def next_turn(game):
     fdremove = []
     for ids in game['players']:
         player = game['players'][ids]
-        item = game['ground'][str(player['main'][0])+'-'+str(player['main'][1])]['item']
+        try:
+            item = game['ground'][str(player['main'][0])+'-'+str(player['main'][1])]['item']
+        except:
+            item = None
         if item != None:
             if item['type'] == 'food':
+                player['len'] += 1
                 for ids in player['coords']:
                     fragment = player['coords'][ids]
                     fragment['lifetime'] += 1
