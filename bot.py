@@ -199,7 +199,6 @@ def next_turn(game):
         for idss in game['players'][ids]['coords']:
             crd = game['players'][ids]['coords'][idss]
             crd['created'] = 'notnow'
-            print(crd)
     for ids in game['players']:
         player = game['players'][ids]
         for idss in game['players'][ids]['coords']:
@@ -234,6 +233,7 @@ def next_turn(game):
                 print('in')
                 if p2 == p1 and p1['coords'][str(p1['main'][0])+'-'+str(p1['main'][1])]['created'] == 'now':
                     print('it is main block')
+                    print(p1['coords'][str(p1['main'][0])+'-'+str(p1['main'][1])])
                 else:
                     print('sneak die!')
                     playerdie.append(p1)
