@@ -329,7 +329,7 @@ def next_turn(game):
         if game['players'][ids]['alive'] == True:
             allow = True
     if allow:
-        threading.Timer(2, next_turn, args = [game]).start()
+        threading.Timer(1, next_turn, args = [game]).start()
     else:
         for ids in game['msgs']:
             msg = ids
@@ -373,7 +373,8 @@ def ground(game, id, kb=False, send=True, msgid = None):
         return text
     else:
         try:
-            medit(text, id, msgid, reply_markup = kb)
+            bot.send_message(id, text, reply_markup = kb)
+            #medit(text, id, msgid, reply_markup = kb)
         except:
             pass
           
