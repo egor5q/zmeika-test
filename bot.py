@@ -162,7 +162,13 @@ def go(m):
         
         lst = []
         for ids in game['ground']:
-            if game['ground'][ids]['item'] == None:
+            allow = True
+            for idss in game['players']:
+                for idsss in game['players'][idss]['coords']:
+                    crd = game['players'][idss]['coords'][idsss]
+                    if crd['pos'] == game['ground'][ids]['code']:
+                        allow = False
+            if allow:
                 lst.append(game['ground'][ids])
         foods = ['🌭', '🍏', '🍄', '🍩']        
         while game['food'] <= game['foodamount']:
@@ -210,8 +216,9 @@ def calls(call):
         player['look'] = 'right'
     bot.answer_callback_query(call.id, 'ᅠ')
         
-        
-     
+
+
+
 def next_turn(game):
   try:
     fragmentdie = []
@@ -271,15 +278,17 @@ def next_turn(game):
                         if ids['player']['id'] == player['id']:
                             fdremove.append(ids)
                 lst = []
-                for ids in game['ground']:
-                    no = False
-                    if game['ground'][ids]['item'] == None:
-                        for idss in game['players']:
-                            pl = game['players'][idss]
-                            if pl['main'] == game['ground'][ids]['code']:
-                                no = True
-                        if no == False:
-                            lst.append(game['ground'][ids])
+                for idss in game['ground']:
+                    allow = True
+                    for idsss in game['players']:
+                        for idssss in game['players'][idsss]['coords']:
+                            crd = game['players'][idsss]['coords'][idssss]
+                            if crd['pos'] == game['ground'][idss]['code']:
+                                allow = False
+                        if game['players'][idsss]['main'] == game['ground'][idss]['code']:
+                            allow = False
+                    if allow:
+                        lst.append(game['ground'][idss])
                         
                 foods = ['🌭', '🍏', '🍄', '🍩']        
                 place = random.choice(lst)
