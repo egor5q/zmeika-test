@@ -162,6 +162,7 @@ def go(m):
         
         lst = []
         for ids in game['ground']:
+            print(ids)
             allow = True
             for idss in game['players']:
                 for idsss in game['players'][idss]['coords']:
@@ -169,7 +170,8 @@ def go(m):
                     if crd['pos'] == game['ground'][ids]['code']:
                         allow = False
             if allow:
-                lst.append(game['ground'][ids])
+                if game['ground'][ids]['code'] not in [[1, 1], [1, 16], [16, 1], [16, 16]]:
+                    lst.append(game['ground'][ids])
         foods = ['🌭', '🍏', '🍄', '🍩']        
         while game['food'] <= game['foodamount']:
             place = random.choice(lst)
