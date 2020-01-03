@@ -254,6 +254,7 @@ def ground(game, id, kb=False, send=True, msgid = None):
         obj = game['ground'][ids]
         if obj['item'] == None:
             text += '⬜'
+        print(obj)
         elif obj['type'] == 'zmei':
             player = game['players'][obj['id']]
             text += player['emoji']
