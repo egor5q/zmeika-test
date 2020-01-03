@@ -307,7 +307,7 @@ def next_turn(game):
         if game['players'][ids]['alive'] == True:
             allow = True
     if allow:
-        threading.Timer(1.5, next_turn, args = [game]).start()
+        threading.Timer(2, next_turn, args = [game]).start()
     else:
         for ids in game['msgs']:
             msg = ids
