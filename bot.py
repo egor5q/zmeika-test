@@ -269,7 +269,7 @@ def next_turn(game):
     else:
         for ids in game['msgs']:
             msg = ids
-            bot.send_message(msg.chat_id, 'Все змейки мертвы, игра завершена!')
+            bot.send_message(msg.chat.id, 'Все змейки мертвы, игра завершена!')
       
   except:
     bot.send_message(441399484, traceback.format_exc())
