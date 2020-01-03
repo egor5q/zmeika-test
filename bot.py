@@ -343,7 +343,7 @@ def ground(game, id, kb=False, send=True, msgid = None):
             player = game['players'][obj['item']['id']]
             text += player['emoji']
         elif obj['item']['type'] == 'food':
-            text += obj['emoji']
+            text += obj['item']['emoji']
     if send == True:
         return text
     else:
