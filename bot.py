@@ -172,6 +172,7 @@ def go(m):
                 'type':'food',
                 'emoji':random.choice(foods)
             }
+            lst.remove(place)
             game['food'] += 1
                 
                 
