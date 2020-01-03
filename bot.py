@@ -217,14 +217,6 @@ def next_turn(game):
                 player['main'][0] += 1
             if player['main'][0] > 16 or player['main'][1] > 16:
                 playerdie.append(player)
-            else:
-                player['coords'].update({str(player['main'][0])+'-'+str(player['main'][1]):{
-                    'pos':[player['main'][0], player['main'][1]],
-                    'lifetime':player['len'],
-                    'type':'zmei',
-                    'id':player['id'],
-                    'created':'now'}})
-            
     for ids in game['players']:
         for idss in game['players']:
             p1 = game['players'][ids]
@@ -237,6 +229,16 @@ def next_turn(game):
                 else:
                     print('sneak die!')
                     playerdie.append(p1)
+                    
+    for ids in game['players']:
+        player = game['players'][ids]
+        player['coords'].update({str(player['main'][0])+'-'+str(player['main'][1]):{
+                    'pos':[player['main'][0], player['main'][1]],
+                    'lifetime':player['len'],
+                    'type':'zmei',
+                    'id':player['id'],
+                    'created':'now'}})
+            
     for ids in fragmentdie:
         del game['players'][ids['player']['id']]['coords'][str(ids['fragment']['pos'][0])+'-'+str(ids['fragment']['pos'][1])]
         try:
