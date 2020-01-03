@@ -287,6 +287,8 @@ def next_turn(game):
                                 allow = False
                         if game['players'][idsss]['main'] == game['ground'][idss]['code']:
                             allow = False
+                    if game['ground'][idss]['item'] != None:
+                        allow = False
                     if allow:
                         lst.append(game['ground'][idss])
                         
