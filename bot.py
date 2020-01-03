@@ -165,7 +165,7 @@ def go(m):
             except:
                 bot.send_message(441399484, traceback.format_exc())
 
-        threading.Timer(8, next_turn, args=[game]).start()
+        threading.Timer(6, next_turn, args=[game]).start()
         
         
 @bot.callback_query_handler(func=lambda call: True)
@@ -226,6 +226,8 @@ def next_turn(game):
                 if p2 == p1 and p1['coords'][str(p1['main'][0])+'-'+str(p1['main'][1])]['created'] == 'now':
                     print('it is main block')
                     print(p1['coords'][str(p1['main'][0])+'-'+str(p1['main'][1])])
+                elif p2 != p1 and p2['coords'][str(p1['main'][0])+'-'+str(p1['main'][1])]['lifetime'] == 0:
+                    pass
                 else:
                     print('sneak die!')
                     playerdie.append(p1)
@@ -265,7 +267,7 @@ def next_turn(game):
         if game['players'][ids]['alive'] == True:
             allow = True
     if allow:
-        threading.Timer(2, next_turn, args = [game]).start()
+        threading.Timer(1.5, next_turn, args = [game]).start()
     else:
         for ids in game['msgs']:
             msg = ids
