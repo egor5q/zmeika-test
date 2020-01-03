@@ -19,7 +19,8 @@ def createplayer(user, em):
         'coords':{},
         'look':'right',
         'len':3,
-        'main':[1, 1]
+        'main':[1, 1],
+        'alive':True
     }
            }
 
@@ -81,7 +82,8 @@ def joinn(m):
         player['coords'].update({'1-1':{'pos':[1, 1],
                                        'lifetime':3,
                                        'type':'zmei',
-                                       'id':player['id']}})
+                                       'id':player['id'],
+                                       'created':'now'}})
         player['main'] = [1, 1]
         game['ground']['1-1']['item'] = player['coords']['1-1']                      
         player['look'] = 'bot'
@@ -90,7 +92,8 @@ def joinn(m):
         player['coords'].update({'1-16':{'pos':[1, 16],
                                        'lifetime':3,
                                        'type':'zmei',
-                                       'id':player['id']}})
+                                       'id':player['id'],
+                                       'created':'now'}})
         player['main'] = [1, 16]
         game['ground']['1-16']['item'] = player['coords']['1-16']
         player['look'] = 'right'
@@ -99,7 +102,8 @@ def joinn(m):
         player['coords'].update({'16-16':{'pos':[16, 16],
                                        'lifetime':3,
                                        'type':'zmei',
-                                       'id':player['id']}})
+                                       'id':player['id'],
+                                       'created':'now'}})
         player['main'] = [16, 16]
         game['ground']['16-16']['item'] = player['coords']['16-16']
         player['look'] = 'top'
@@ -108,7 +112,8 @@ def joinn(m):
         player['coords'].update({'16-1':{'pos':[16, 1],
                                        'lifetime':3,
                                        'type':'zmei',
-                                       'id':player['id']}})
+                                       'id':player['id'],
+                                       'created':'now'}})
         player['main'] = [16, 1]
         game['ground']['16-1']['item'] = player['coords']['16-1']
         player['look'] = 'left'
@@ -183,37 +188,47 @@ def next_turn(game):
         player = game['players'][ids]
         for idss in game['players'][ids]['coords']:
             crd = game['players'][ids]['coords'][idss]
+            crd['created'] = 'notnow'
+    for ids in game['players']:
+        player = game['players'][ids]
+        for idss in game['players'][ids]['coords']:
+            crd = game['players'][ids]['coords'][idss]
             crd['lifetime'] -= 1
             if crd['lifetime'] <= 0:
                 fragmentdie.append({'player':player, 'fragment':crd})
-        if player['look'] == 'top':
-            player['main'][1] -= 1
-        elif player['look'] == 'left':
-            player['main'][0] -= 1
-        elif player['look'] == 'bot':
-            player['main'][1] += 1
-        elif player['look'] == 'right':
-            player['main'][0] += 1
-        if player['main'][0] > 16 or player['main'][1] > 16:
-            playerdie.append(player)
-        else:
-            player['coords'].update({str(player['main'][0])+'-'+str(player['main'][1]):{
-                'pos':[player['main'][0], player['main'][1]],
-                'lifetime':player['len'],
-                'type':'zmei',
-                'id':player['id']}})
+        if player['alive']:
+            if player['look'] == 'top':
+                player['main'][1] -= 1
+            elif player['look'] == 'left':
+                player['main'][0] -= 1
+            elif player['look'] == 'bot':
+                player['main'][1] += 1
+            elif player['look'] == 'right':
+                player['main'][0] += 1
+            if player['main'][0] > 16 or player['main'][1] > 16:
+                playerdie.append(player)
+            else:
+                player['coords'].update({str(player['main'][0])+'-'+str(player['main'][1]):{
+                    'pos':[player['main'][0], player['main'][1]],
+                    'lifetime':player['len'],
+                    'type':'zmei',
+                    'id':player['id'],
+                    'created':'now'}})
             
     for ids in game['players']:
         for idss in game['players']:
             p1 = game['players'][ids]
             p2 = game['players'][idss]
             if str(p1['main'][0])+'-'+str(p1['main'][1]) in p2['coords']:
-                playerdie.append(p1)
+                if p2 == p1 and p1['coords'][str(p1['main'][0])+'-'+str(p1['main'][1])]['created'] == 'now':
+                    pass
+                else:
+                    playerdie.append(p1)
     for ids in fragmentdie:
         del game['players'][ids['player']['id']]['coords'][str(ids['fragment']['pos'][0])+'-'+str(ids['fragment']['pos'][1])]
         
     for ids in playerdie:
-        del game['players'][ids['id']]
+        game['players'][ids['id']]['alive'] = False
         
     for ids in game['players']:
         for idss in game['players'][ids]['coords']:
@@ -222,6 +237,7 @@ def next_turn(game):
             
     for ids in game['msgs']:
         msg = ids
+        
         ground(game, id=msg.chat.id, kb=True, send=False, msgid = msg.message_id)
     threading.Timer(1, next_turn, args = [game]).start()
       
