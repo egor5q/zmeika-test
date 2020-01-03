@@ -267,7 +267,10 @@ def next_turn(game):
                         if ids['player']['id'] == player['id']:
                             fdremove.append(ids)
     for ids in fdremove:
-        fragmentdie.remove(ids)
+        try:
+            fragmentdie.remove(ids)
+        except:
+            pass
                     
     for ids in game['players']:
         player = game['players'][ids]
