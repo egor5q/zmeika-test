@@ -18,7 +18,7 @@ def createplayer(user, em):
         'emoji':em,
         'coords':{},
         'look':'right',
-        'len':3,
+        'len':5,
         'main':[1, 1],
         'alive':True
     }
@@ -80,7 +80,7 @@ def joinn(m):
     player = game['players'][m.from_user.id]
     if len(game['players']) == 1:
         player['coords'].update({'1-1':{'pos':[1, 1],
-                                       'lifetime':3,
+                                       'lifetime':5,
                                        'type':'zmei',
                                        'id':player['id'],
                                        'created':'now'}})
@@ -90,7 +90,7 @@ def joinn(m):
         
     elif len(game['players']) == 2:
         player['coords'].update({'1-16':{'pos':[1, 16],
-                                       'lifetime':3,
+                                       'lifetime':5,
                                        'type':'zmei',
                                        'id':player['id'],
                                        'created':'now'}})
@@ -100,7 +100,7 @@ def joinn(m):
         
     elif len(game['players']) == 3:
         player['coords'].update({'16-16':{'pos':[16, 16],
-                                       'lifetime':3,
+                                       'lifetime':5,
                                        'type':'zmei',
                                        'id':player['id'],
                                        'created':'now'}})
@@ -110,7 +110,7 @@ def joinn(m):
         
     elif len(game['players']) == 4:
         player['coords'].update({'16-1':{'pos':[16, 1],
-                                       'lifetime':3,
+                                       'lifetime':5,
                                        'type':'zmei',
                                        'id':player['id'],
                                        'created':'now'}})
@@ -189,6 +189,7 @@ def next_turn(game):
         for idss in game['players'][ids]['coords']:
             crd = game['players'][ids]['coords'][idss]
             crd['created'] = 'notnow'
+            print(crd)
     for ids in game['players']:
         player = game['players'][ids]
         for idss in game['players'][ids]['coords']:
@@ -220,9 +221,11 @@ def next_turn(game):
             p1 = game['players'][ids]
             p2 = game['players'][idss]
             if str(p1['main'][0])+'-'+str(p1['main'][1]) in p2['coords']:
+                print('in')
                 if p2 == p1 and p1['coords'][str(p1['main'][0])+'-'+str(p1['main'][1])]['created'] == 'now':
-                    pass
+                    print('it is main block')
                 else:
+                    print('sneak die!')
                     playerdie.append(p1)
     for ids in fragmentdie:
         del game['players'][ids['player']['id']]['coords'][str(ids['fragment']['pos'][0])+'-'+str(ids['fragment']['pos'][1])]
@@ -231,9 +234,6 @@ def next_turn(game):
         except:
             pass
         
-    for ids in playerdie:
-        game['players'][ids['id']]['alive'] = False
-        
     for ids in game['players']:
         for idss in game['players'][ids]['coords']:
             try:
@@ -241,6 +241,7 @@ def next_turn(game):
                 game['ground'][idss]['item'] = coord
             except:
                 playerdie.append(game['players'][ids])
+                
     for ids in playerdie:
         game['players'][ids['id']]['alive'] = False
             
