@@ -165,7 +165,7 @@ def go(m):
             if game['ground'][ids]['item'] == None:
                 lst.append(game['ground'][ids])
         foods = ['🌭', '🍏', '🍄', '🍩']        
-        while game['food'] < game['foodamount']:
+        while game['food'] <= game['foodamount']:
             place = random.choice(lst)
             game['ground'][str(place['code'][0])+'-'+str(place['code'][0])]['item'] = {
                 'pos':[place['code'][0], place['code'][1]],
@@ -270,6 +270,24 @@ def next_turn(game):
                     for ids in fragmentdie:
                         if ids['player']['id'] == player['id']:
                             fdremove.append(ids)
+                lst = []
+                for ids in game['ground']:
+                    no = False
+                    if game['ground'][ids]['item'] == None:
+                        for idss in game['players']:
+                            pl = game['players'][idss]
+                            if pl['main'] == game['ground'][ids]['code']:
+                                no = True
+                        if no == False:
+                            lst.append(game['ground'][ids])
+                        
+                foods = ['🌭', '🍏', '🍄', '🍩']        
+                place = random.choice(lst)
+                game['ground'][str(place['code'][0])+'-'+str(place['code'][0])]['item'] = {
+                    'pos':[place['code'][0], place['code'][1]],
+                    'type':'food',
+                    'emoji':random.choice(foods)
+                }
     for ids in fdremove:
         try:
             fragmentdie.remove(ids)
