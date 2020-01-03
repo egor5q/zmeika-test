@@ -45,9 +45,12 @@ def deleeet(m):
 def startgame(m):
 
     if m.chat.id not in games:
-        game = creategame(m)
+        try:
+            size = int(m.text.split(' ')[1])
+        except:
+            size = 15
+        game = creategame(m, size=size)
         x = m.text.split(' ')
-
         games.update(game)
         game = games[m.chat.id]
         bot.send_message(m.chat.id, 'Подготовка к игре запущена. Код игры: '+game['code']+'. '+
@@ -99,33 +102,33 @@ def joinn(m):
         player['look'] = 'bot'
         
     elif len(game['players']) == 2:
-        player['coords'].update({'1-16':{'pos':[1, 16],
+        player['coords'].update({'1-'+str(game['size']):{'pos':[1, game['size']],
                                        'lifetime':5,
                                        'type':'zmei',
                                        'id':player['id'],
                                        'created':'now'}})
-        player['main'] = [1, 16]
-        game['ground']['1-16']['item'] = player['coords']['1-16']
+        player['main'] = [1, game['size']]
+        game['ground']['1-'+str(game['size'])]['item'] = player['coords']['1-'+str(game['size'])]
         player['look'] = 'right'
         
     elif len(game['players']) == 3:
-        player['coords'].update({'16-16':{'pos':[16, 16],
+        player['coords'].update({str(game['size'])+'-'+str(game['size']):{'pos':[game['size'], game['size']],
                                        'lifetime':5,
                                        'type':'zmei',
                                        'id':player['id'],
                                        'created':'now'}})
-        player['main'] = [16, 16]
-        game['ground']['16-16']['item'] = player['coords']['16-16']
+        player['main'] = [game['size'], game['size']]
+        game['ground'][str(game['size'])+'-'+str(game['size'])]['item'] = player['coords'][str(game['size'])+'-'+str(game['size'])]
         player['look'] = 'top'
         
     elif len(game['players']) == 4:
-        player['coords'].update({'16-1':{'pos':[16, 1],
+        player['coords'].update({str(game['size'])+'-1':{'pos':[game['size'], 1],
                                        'lifetime':5,
                                        'type':'zmei',
                                        'id':player['id'],
                                        'created':'now'}})
-        player['main'] = [16, 1]
-        game['ground']['16-1']['item'] = player['coords']['16-1']
+        player['main'] = [game['size'], 1]
+        game['ground'][str(game['size'])+'-1']['item'] = player['coords'][str(game['size'])+'-1']
         player['look'] = 'left'
     bot.send_message(m.chat.id, 'Вы успешно присоединились к игре! Эмодзи вашей змейки - '+em+'!')
     bot.send_message(game['id'], m.from_user.first_name+' присоединился!')
@@ -170,8 +173,7 @@ def go(m):
                     if crd['pos'] == game['ground'][ids]['code']:
                         allow = False
             if allow:
-                if game['ground'][ids]['code'] not in [[1, 1], [1, 16], [16, 1], [16, 16]]:
-                    lst.append(game['ground'][ids])
+                lst.append(game['ground'][ids])
         foods = ['🌭', '🍏', '🍄', '🍩']        
         while game['food'] <= game['foodamount']:
             place = random.choice(lst)
@@ -246,7 +248,7 @@ def next_turn(game):
                 player['main'][1] += 1
             elif player['look'] == 'right':
                 player['main'][0] += 1
-            if player['main'][0] > 16 or player['main'][1] > 16:
+            if player['main'][0] > game['size'] or player['main'][1] > game['size']:
                 playerdie.append(player)
     for ids in game['players']:
         for idss in game['players']:
@@ -395,13 +397,13 @@ def ground(game, id, kb=False, send=True, msgid = None):
         
         
      
-def creategame(m, machine = 'phone', maxp = 4):
+def creategame(m, machine = 'phone', maxp = 4, size = 15):
     g = {}
     x = 1
     y = 1
-    while y <= 16:
+    while y <= size:
         x = 1
-        while x <= 16:
+        while x <= size:
             g.update({str(x)+'-'+str(y):{'code':[x, y],
                                         'item':None}})
             x+=1
@@ -435,7 +437,8 @@ def creategame(m, machine = 'phone', maxp = 4):
         'code':code,
         'maxp':maxp,
         'food':0,
-        'foodamount':8
+        'foodamount':8,
+        'size':size
         
     }
            }
