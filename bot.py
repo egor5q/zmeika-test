@@ -148,7 +148,7 @@ def go(m):
                 msg = bot.send_message(game['players'][ids]['id'], ground(game, id=game['players'][ids]['id'], kb=True, send=True), reply_markup = kb)
                 game['msgs'].append(msg)
             except:
-                pass
+                bot.send_message(441399484, traceback.format_exc())
 
         threading.Timer(8, next_turn, args=[game]).start()
         
@@ -176,6 +176,7 @@ def calls(call):
         
      
 def next_turn(game):
+  try:
     fragmentdie = []
     playerdie = []
     for ids in game['players']:
@@ -223,7 +224,9 @@ def next_turn(game):
         msg = ids
         ground(game, id=msg.chat.id, kb=True, send=False, msgid = msg.message_id)
     threading.Timer(1, next_turn, args = [game]).start()
-            
+      
+  except:
+    bot.send_message(441399484, traceback.format_exc())
 
             
             
@@ -317,6 +320,6 @@ def medit(message_text, chat_id, message_id, reply_markup=None, parse_mode=None)
                                     reply_markup=reply_markup,
                                     parse_mode=parse_mode)
 
-
+print('7777')
 bot.polling(none_stop=True)
 
