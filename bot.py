@@ -74,6 +74,9 @@ def joinn(m):
     if game == None:
         bot.send_message(m.chat.id, 'Игры не существует!')
         return
+    if m.from_user.id in game['players']:
+        bot.send_message(m.chat.id, 'Вы уже в игре!')
+        return
     if len(game['players']) >= game['maxp']:
         bot.send_message(m.chat.id, 'В игре уже присутствует максимальное число игроков ('+str(game['maxp'])+')!')
         return
