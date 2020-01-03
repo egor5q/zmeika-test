@@ -252,9 +252,9 @@ def ground(game, id, kb=False, send=True, msgid = None):
     
     for ids in game['ground']:
         obj = game['ground'][ids]
+        print(obj)
         if obj['item'] == None:
             text += '⬜'
-        print(obj)
         elif obj['type'] == 'zmei':
             player = game['players'][obj['id']]
             text += player['emoji']
