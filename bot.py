@@ -260,7 +260,16 @@ def next_turn(game):
     for ids in game['msgs']:
         msg = ids
         ground(game, id=msg.chat.id, kb=True, send=False, msgid = msg.message_id)
-    threading.Timer(2, next_turn, args = [game]).start()
+    allow = False
+    for ids in game['players']:
+        if game['players'][ids]['alive'] == True:
+            allow = True
+    if allow:
+        threading.Timer(2, next_turn, args = [game]).start()
+    else:
+        for ids in game['msgs']:
+            msg = ids
+            bot.send_message(msg.chat_id, 'Все змейки мертвы, игра завершена!')
       
   except:
     bot.send_message(441399484, traceback.format_exc())
