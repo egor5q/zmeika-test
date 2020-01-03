@@ -144,7 +144,7 @@ def go(m):
            types.InlineKeyboardButton(text = '>', callback_data = 'right '+str(game['id']))
                                                                 )
     
-        kb.add(types.InlineKeyboardButton(text = 'ᅠ', callback_data = 'left '+str(game['id'])),
+        kb.add(types.InlineKeyboardButton(text = 'ᅠ', callback_data = 'none'),
            types.InlineKeyboardButton(text = 'v', callback_data = 'down '+str(game['id'])),
            types.InlineKeyboardButton(text = 'ᅠ', callback_data = 'none')
                                                                 )
@@ -266,7 +266,7 @@ def ground(game, id, kb=False, send=True, msgid = None):
            types.InlineKeyboardButton(text = '>', callback_data = 'right '+str(game['id']))
                                                                 )
     
-    kb.add(types.InlineKeyboardButton(text = 'ᅠ', callback_data = 'left '+str(game['id'])),
+    kb.add(types.InlineKeyboardButton(text = 'ᅠ', callback_data = 'none'),
            types.InlineKeyboardButton(text = 'v', callback_data = 'down '+str(game['id'])),
            types.InlineKeyboardButton(text = 'ᅠ', callback_data = 'none')
                                                                 )
