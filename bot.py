@@ -228,6 +228,7 @@ def calls(call):
 
 def next_turn(game):
   try:
+    game['turn'] += 1
     fragmentdie = []
     playerdie = []
     for ids in game['players']:
@@ -347,6 +348,10 @@ def next_turn(game):
         if game['players'][ids]['alive'] == True:
             allow = True
     if allow:
+        if game['turn']%25 == 0:
+            for ids in game['players']:
+                bot.send_message(game['players'][ids]['id'], 'Через 10 секунд игра продолжится, бот не может часто отправлять сообщения.')
+            time.sleep(10)
         threading.Timer(1, next_turn, args = [game]).start()
     else:
         for ids in game['msgs']:
@@ -441,7 +446,8 @@ def creategame(m, machine = 'phone', maxp = 4, size = 15):
         'maxp':maxp,
         'food':0,
         'foodamount':8,
-        'size':size
+        'size':size,
+        'turn'0
         
     }
            }
