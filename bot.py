@@ -348,7 +348,7 @@ def next_turn(game):
         if game['players'][ids]['alive'] == True:
             allow = True
     if allow:
-        if game['turn']%25 == 0:
+        if game['turn']%35 == 0:
             for ids in game['players']:
                 bot.send_message(game['players'][ids]['id'], 'Через 10 секунд игра продолжится, бот не может часто отправлять сообщения.')
             time.sleep(10)
