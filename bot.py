@@ -446,8 +446,7 @@ def creategame(m, machine = 'phone', maxp = 4, size = 15):
         'maxp':maxp,
         'food':0,
         'foodamount':8,
-        'size':size,
-        'turn'0
+        'size':size
         
     }
            }
