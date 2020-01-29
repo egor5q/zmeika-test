@@ -400,7 +400,7 @@ def ground(game, id, kb=False, send=True, msgid = None):
             bot.send_message(id, text, reply_markup = kb)
             #medit(text, id, msgid, reply_markup = kb)
         except:
-            pass
+            bot.send_message(441399484, traceback.format_exc())
           
         
         
